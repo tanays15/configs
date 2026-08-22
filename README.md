@@ -37,7 +37,6 @@ chsh -s $(which zsh)
    tmux plugins declared in `tmux.conf`:
 
    ```sh
-   cd ~/Documents/Development/configs
    ./install.sh
    ```
 
