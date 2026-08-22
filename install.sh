@@ -1,25 +1,26 @@
 #!/usr/bin/env bash
-# Installs these dotfiles onto a fresh machine by copying the real content
-# (following the symlinks) into place. Existing files at the destination
-# are backed up with a .bak suffix rather than overwritten silently.
+# Installs these dotfiles onto a fresh machine by symlinking the real
+# locations (~/.zshrc, ~/.config/tmux/tmux.conf, ~/.config/nvim) back to
+# the files tracked in this repo. Anything already at those paths is
+# backed up with a .bak suffix rather than overwritten silently.
 set -euo pipefail
 
 repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-install_file() {
+link_file() {
   local src="$1" dest="$2"
   if [ -e "$dest" ] || [ -L "$dest" ]; then
     echo "Backing up existing $dest -> $dest.bak"
     mv "$dest" "$dest.bak"
   fi
   mkdir -p "$(dirname "$dest")"
-  cp -RL "$src" "$dest"
-  echo "Installed $dest"
+  ln -s "$src" "$dest"
+  echo "Linked $dest -> $src"
 }
 
-install_file "$repo_dir/zshrc" "$HOME/.zshrc"
-install_file "$repo_dir/tmux.conf" "$HOME/.config/tmux/tmux.conf"
-install_file "$repo_dir/nvim" "$HOME/.config/nvim"
+link_file "$repo_dir/zshrc" "$HOME/.zshrc"
+link_file "$repo_dir/tmux.conf" "$HOME/.config/tmux/tmux.conf"
+link_file "$repo_dir/nvim" "$HOME/.config/nvim"
 
 if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
   echo "Installing TPM (tmux plugin manager)..."
