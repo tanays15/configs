@@ -34,29 +34,17 @@ chsh -s $(which zsh)
    git clone <your-repo-url> ~/Documents/Development/configs
    ```
 
-2. Copy the *content* into the real locations (using `-L` to follow the
-   symlinks and copy the actual files, since the repo only holds pointers):
+2. Run the install script. It copies the real content into place (following
+   the symlinks, since the repo only holds pointers), backing up anything
+   already at those paths as `<path>.bak`, then installs TPM and fetches the
+   tmux plugins declared in `tmux.conf`:
 
    ```sh
    cd ~/Documents/Development/configs
-   cp -L zshrc ~/.zshrc
-   mkdir -p ~/.config/tmux
-   cp -L tmux.conf ~/.config/tmux/tmux.conf
-   cp -RL nvim ~/.config/nvim
+   ./install.sh
    ```
 
-3. Install TPM (tmux plugin manager) and fetch the plugins declared in
-   `tmux.conf`:
-
-   ```sh
-   git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-   tmux new-session -d -s _tpm_bootstrap
-   tmux send-keys -t _tpm_bootstrap '~/.tmux/plugins/tpm/scripts/install_plugins.sh' Enter
-   ```
-
-   (or start tmux and press `prefix + I` once attached).
-
-4. Reload:
+3. Reload:
 
    ```sh
    source ~/.zshrc
