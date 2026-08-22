@@ -30,9 +30,6 @@ chsh -s $(which zsh)
 
 1. Clone this repo:
 
-   ```sh
-   git clone <your-repo-url> ~/Documents/Development/configs
-   ```
 
 2. Run the install script. It copies the real content into place (following
    the symlinks, since the repo only holds pointers), backing up anything
