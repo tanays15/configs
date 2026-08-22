@@ -63,9 +63,3 @@ chsh -s $(which zsh)
    tmux source-file ~/.config/tmux/tmux.conf
    nvim   # installs plugins via vim.pack on first launch
    ```
-
-## Back on this machine
-
-Nothing to do — the repo files already are the live config via symlink.
-`git add` / `git commit` here picks up changes made through the normal
-paths (`~/.zshrc`, `~/.config/tmux/tmux.conf`, `~/.config/nvim`).
