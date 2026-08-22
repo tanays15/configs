@@ -21,6 +21,14 @@ link_file() {
 link_file "$repo_dir/zshrc" "$HOME/.zshrc"
 link_file "$repo_dir/tmux.conf" "$HOME/.config/tmux/tmux.conf"
 link_file "$repo_dir/nvim" "$HOME/.config/nvim"
+link_file "$repo_dir/gitconfig" "$HOME/.gitconfig"
+
+# Ghostty's macOS app reads from Application Support, taking precedence over
+# the XDG path even when both exist; link both so the XDG path is still
+# correct (e.g. for the ghostty CLI with $XDG_CONFIG_HOME set) without
+# affecting which one the app actually uses.
+link_file "$repo_dir/ghostty.conf" "$HOME/Library/Application Support/com.mitchellh.ghostty/config"
+link_file "$repo_dir/ghostty.conf" "$HOME/.config/ghostty/config"
 
 if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
   echo "Installing TPM (tmux plugin manager)..."

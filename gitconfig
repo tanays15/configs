@@ -1,0 +1,10 @@
+[user]
+	name = Tanay Sahasrabudhe
+	email = tanay.sahasrabudhe@gmail.com
+[pull]
+	ff = only
+	rebase = false
+[core]
+	excludesfile = /Users/tanaysahasrabudhe/.gitignore_global
+[init]
+	defaultBranch = main
