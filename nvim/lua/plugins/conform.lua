@@ -33,7 +33,7 @@ require('conform').setup {
     },
     formatters = {
         clang_format = {
-            prepend_args = { '--style={BasedOnStyle: LLVM, AllowShortFunctionsOnLine: None}' },
+            prepend_args = { '--style={BasedOnStyle: LLVM, AllowShortFunctionsOnASingleLine: None}' },
         },
     },
 }

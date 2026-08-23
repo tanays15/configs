@@ -40,3 +40,7 @@ alias gs="git status"
 gc() {
   git commit -m "$*"
 }
+
+# claude
+
+alias cc="claude --dangerously-skip-permissions"
