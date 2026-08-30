@@ -12,16 +12,6 @@ export LC_ALL=en_US.UTF-8
 # servers
 alias data="ssh tsahasra@data.cs.purdue.edu"
 
-# tmux
-alias a="tmux -u a"
-
-ts() {
-  tmux -u new -s "$1"
-}
-
-tn() {
-  tmux new-window -n "$1"
-}
 
 # configs
 alias nvc="nvim ~/.config/nvim/init.lua"
@@ -34,13 +24,5 @@ alias ..="cd .."
 alias ll="ls -la"
 alias c="clear"
 
-# git
-alias gs="git status"
-
-gc() {
-  git commit -m "$*"
-}
-
-# claude
 
 alias cc="claude --dangerously-skip-permissions"

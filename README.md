@@ -1,9 +1,9 @@
 # configs
 
-Personal dotfiles for zsh, tmux, Neovim, git, and Ghostty.
+Personal dotfiles for zsh, tmux, Neovim, and Ghostty.
 
 This repo holds the real config files. The standard locations
-(`~/.zshrc`, `~/.config/tmux/tmux.conf`, `~/.config/nvim`, `~/.gitconfig`)
+(`~/.zshrc`, `~/.config/tmux/tmux.conf`, `~/.config/nvim`)
 are symlinks pointing back in here, so editing either path edits the same
 file, and GitHub shows actual content rather than link pointers.
 
@@ -34,7 +34,7 @@ chsh -s $(which zsh)
 
 
 2. Run the install script. It symlinks `~/.zshrc`, `~/.config/tmux/tmux.conf`,
-   `~/.config/nvim`, `~/.gitconfig`, and the Ghostty config back to the files
+   `~/.config/nvim`, and the Ghostty config back to the files
    in this repo (backing up anything already at those paths as `<path>.bak`),
    then installs TPM and fetches the tmux plugins declared in `tmux.conf`:
 
