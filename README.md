@@ -1,9 +1,11 @@
 # configs
 
-Personal dotfiles for zsh, tmux, Neovim, and Ghostty.
+Personal dotfiles for zsh, tmux, Neovim, yabai, Karabiner, and Ghostty.
 
 This repo holds the real config files. The standard locations
-(`~/.zshrc`, `~/.config/tmux/tmux.conf`, `~/.config/nvim`)
+(`~/.zshrc`, `~/.config/tmux/tmux.conf`, `~/.config/nvim`,
+`~/.config/yabai/yabairc`,
+`~/.config/karabiner/karabiner.json`)
 are symlinks pointing back in here, so editing either path edits the same
 file, and GitHub shows actual content rather than link pointers.
 
@@ -18,7 +20,7 @@ set).
 ## Install the tools
 
 ```sh
-brew install tmux neovim ghostty
+brew install tmux neovim ghostty koekeishiya/formulae/yabai
 ```
 
 zsh ships with macOS by default. To make it your login shell if it isn't
@@ -34,8 +36,8 @@ chsh -s $(which zsh)
 
 
 2. Run the install script. It symlinks `~/.zshrc`, `~/.config/tmux/tmux.conf`,
-   `~/.config/nvim`, and the Ghostty config back to the files
-   in this repo (backing up anything already at those paths as `<path>.bak`),
+   `~/.config/nvim`, the yabai and Karabiner configs, and the Ghostty config back to the
+   files in this repo (backing up anything already at those paths as `<path>.bak`),
    then installs TPM and fetches the tmux plugins declared in `tmux.conf`:
 
    ```sh

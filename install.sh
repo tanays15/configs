@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Installs these dotfiles onto a fresh machine by symlinking the real
-# locations (~/.zshrc, ~/.config/tmux/tmux.conf, ~/.config/nvim) back to
+# locations (~/.zshrc, ~/.config/tmux/tmux.conf, ~/.config/nvim, yabai,
+# karabiner) back to
 # the files tracked in this repo. Anything already at those paths is
 # backed up with a .bak suffix rather than overwritten silently.
 set -euo pipefail
@@ -21,6 +22,8 @@ link_file() {
 link_file "$repo_dir/zshrc" "$HOME/.zshrc"
 link_file "$repo_dir/tmux.conf" "$HOME/.config/tmux/tmux.conf"
 link_file "$repo_dir/nvim" "$HOME/.config/nvim"
+link_file "$repo_dir/yabairc" "$HOME/.config/yabai/yabairc"
+link_file "$repo_dir/karabiner.json" "$HOME/.config/karabiner/karabiner.json"
 
 # Ghostty's macOS app reads from Application Support, taking precedence over
 # the XDG path even when both exist; link both so the XDG path is still
