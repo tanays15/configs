@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+yabai -m config layout bsp
+
 yabai -m config top_padding 15
 yabai -m config bottom_padding 15
 yabai -m config left_padding 15
@@ -12,3 +14,10 @@ yabai -m config mouse_modifier fn
 
 yabai -m config focus_follows_mouse autoraise
 yabai -m config mouse_follows_focus on
+
+# Closing a window often leaves macOS with nothing focused. When a window is
+# destroyed, check whether anything still has focus; if not, focus the window
+# under the mouse, falling back to the first window on the space. Registered as
+# a signal (not an skhd bind) so it fires however the window was closed.
+yabai -m signal --add event=window_destroyed action='yabai -m query --windows --window >/dev/null 2>&1 || yabai -m window --focus mouse >/dev/null 2>&1 || yabai -m window --focus "$(yabai -m query --windows --space | jq -r ".[0].id")" >/dev/null 2>&1'
+
