@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# Fuzzy-find a project directory and attach to a tmux session for it, creating
+# the session if it does not exist yet. Bound to prefix + f in tmux.conf.
+#
+# Takes a directory as $1 to skip the picker, so it also works from the shell.
+
+set -uo pipefail
+
+# Directories to search one level deep for projects. Add roots as needed.
+SEARCH_ROOTS=(
+    "$HOME/Documents/Development"
+)
+
+if [ $# -eq 1 ]; then
+    selected="$1"
+else
+    selected=$(find "${SEARCH_ROOTS[@]}" -mindepth 1 -maxdepth 1 -type d -not -name '.*' 2>/dev/null \
+        | sort \
+        | fzf --reverse --prompt 'project> ')
+fi
+
+# Cancelled out of fzf.
+[ -z "$selected" ] && exit 0
+
+# tmux forbids "." and ":" in session names.
+session_name=$(basename "$selected" | tr '.:' '__')
+
+# Not inside tmux and no server running: just start one in the foreground.
+if [ -z "${TMUX:-}" ] && ! pgrep -q tmux; then
+    exec tmux new-session -s "$session_name" -c "$selected"
+fi
+
+# Create the session detached if it isn't already there.
+if ! tmux has-session -t="$session_name" 2>/dev/null; then
+    tmux new-session -ds "$session_name" -c "$selected"
+fi
+
+# Attach from outside tmux, switch from inside it.
+if [ -z "${TMUX:-}" ]; then
+    exec tmux attach-session -t "$session_name"
+else
+    tmux switch-client -t "$session_name"
+fi

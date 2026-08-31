@@ -20,7 +20,7 @@ set).
 ## Install the tools
 
 ```sh
-brew install tmux neovim ghostty koekeishiya/formulae/yabai koekeishiya/formulae/skhd
+brew install tmux neovim ghostty fzf koekeishiya/formulae/yabai koekeishiya/formulae/skhd
 ```
 
 zsh ships with macOS by default. To make it your login shell if it isn't
