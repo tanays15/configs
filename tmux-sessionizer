@@ -6,24 +6,56 @@
 
 set -uo pipefail
 
-# Directories to search one level deep for projects. Add roots as needed.
+# Directories to search for projects, as "root:depth". Every directory from one
+# level down to <depth> levels under the root is offered, so Purdue at depth 2
+# lists both the semesters and the courses inside them. Depth 0 means the root
+# is itself the project and has nothing to descend into. Add roots as needed.
 SEARCH_ROOTS=(
-    "$HOME/Documents/Development"
+    "$HOME/Documents/Development:1"
+    "$HOME/Documents/Purdue:2"
+    "$HOME/Documents/ROS:0"
+    "$HOME/.config:1"
+    "$HOME/src:1"
 )
+
+# Hidden directories and node_modules are pruned rather than filtered, so the
+# search never descends into them (the roots themselves may still be hidden,
+# e.g. ~/.config, because -mindepth 1 exempts them from the prune test).
+# find -L so symlinked project directories (~/.config/nvim points into this
+# repo) count as directories instead of being skipped.
+list_projects() {
+    local entry root depth
+    for entry in "${SEARCH_ROOTS[@]}"; do
+        root=${entry%:*}
+        depth=${entry##*:}
+        [ -d "$root" ] || continue
+        if [ "$depth" -eq 0 ]; then
+            printf '%s\n' "$root"
+            continue
+        fi
+        find -L "$root" -mindepth 1 -maxdepth "$depth" \
+            \( -name '.*' -o -name 'node_modules' \) -prune -o -type d -print 2>/dev/null
+    done | sort -u
+}
 
 if [ $# -eq 1 ]; then
     selected="$1"
 else
-    selected=$(find "${SEARCH_ROOTS[@]}" -mindepth 1 -maxdepth 1 -type d -not -name '.*' 2>/dev/null \
-        | sort \
-        | fzf --reverse --prompt 'project> ')
+    # Listed relative to $HOME so same-named directories in different roots stay
+    # distinguishable without a screenful of /Users/... on every line.
+    selected=$(list_projects | sed "s|^$HOME/||" | fzf --reverse --prompt 'project> ')
+    case "$selected" in
+        ''|/*) ;;
+        *) selected="$HOME/$selected" ;;
+    esac
 fi
 
 # Cancelled out of fzf.
 [ -z "$selected" ] && exit 0
 
-# tmux forbids "." and ":" in session names.
-session_name=$(basename "$selected" | tr '.:' '__')
+# tmux forbids "." and ":" in session names; spaces are legal but awkward to
+# target with has-session/switch-client, so they go too.
+session_name=$(basename "$selected" | tr '.: ' '___')
 
 # Not inside tmux and no server running: just start one in the foreground.
 if [ -z "${TMUX:-}" ] && ! pgrep -q tmux; then
