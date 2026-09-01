@@ -24,6 +24,7 @@ link_file "$repo_dir/nvim" "$HOME/.config/nvim"
 link_file "$repo_dir/yabairc" "$HOME/.config/yabai/yabairc"
 link_file "$repo_dir/skhdrc" "$HOME/.config/skhd/skhdrc"
 link_file "$repo_dir/tmux-sessionizer" "$HOME/.local/bin/tmux-sessionizer"
+link_file "$repo_dir/yabai-stack-app" "$HOME/.local/bin/yabai-stack-app"
 
 # Ghostty's macOS app reads from Application Support, taking precedence over
 # the XDG path even when both exist; link both so the XDG path is still
