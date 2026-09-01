@@ -10,6 +10,11 @@ yabai -m config window_gap 15
 
 yabai -m config window_placement second_child
 
+# Highlight for `window --insert` and mouse_drag selection, as 0xAARRGGBB
+# (ff = fully opaque + #005b96). This is the only color yabai itself draws:
+# window borders live in JankyBorders, not yabai, since v6.
+yabai -m config insert_feedback_color 0xff005b96
+
 yabai -m config mouse_modifier fn
 
 yabai -m config focus_follows_mouse autoraise
@@ -21,7 +26,6 @@ yabai -m config mouse_follows_focus on
 # a signal (not an skhd bind) so it fires however the window was closed.
 yabai -m signal --add event=window_destroyed action='yabai -m query --windows --window >/dev/null 2>&1 || yabai -m window --focus mouse >/dev/null 2>&1 || yabai -m window --focus "$(yabai -m query --windows --space | jq -r ".[0].id")" >/dev/null 2>&1'
 
-
 # Firefox windows should always live in one stack per space. yabai keeps stacks
 # in memory only, so they are gone after a restart: rebuild them here (in the
 # background, since windows are still being registered while yabairc runs) and
@@ -29,4 +33,19 @@ yabai -m signal --add event=window_destroyed action='yabai -m query --windows --
 yabai -m signal --add event=window_created app='^Firefox$' \
   action='"$HOME/.local/bin/yabai-stack-app" "^Firefox$"'
 
-(sleep 2; "$HOME/.local/bin/yabai-stack-app" "^Firefox$") &
+(
+  sleep 2
+  "$HOME/.local/bin/yabai-stack-app" "^Firefox$"
+) &
+
+# Border around the focused window (JankyBorders; yabai dropped its own border
+# support in v6). Colors are 0xAARRGGBB, so #005b96 -> 0xff005b96. The inactive
+# color is fully transparent (alpha 00), i.e. unfocused windows get no border.
+# ax_focus=on makes it use the accessibility API to resolve focus, which is
+# what keeps it in sync with yabai's stacks and window swaps.
+borders \
+  active_color=0xff1a7bed \
+  inactive_color=0x00000000 \
+  width=7.0 \
+  style=round \
+  ax_focus=on &
