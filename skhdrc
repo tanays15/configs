@@ -50,6 +50,6 @@ hyper - 5 : yabai -m window --space 5
 hyper - r : yabai --restart-service
 
 # -- applications --
-cmd + alt + ctrl - b      : /Applications/Firefox.app/Contents/MacOS/firefox --new-window about:blank
+cmd + alt + ctrl - b      : if pgrep -xq firefox; then open -a Firefox && skhd -k "cmd - n"; else open -a Firefox --args --new-window about:blank; fi
 cmd + alt + ctrl - return : open -a Ghostty && skhd -k "cmd - n"
 cmd + alt + ctrl - d      : open Discord
